@@ -73,7 +73,7 @@ struct line {
 //	}
 //}
 //
-
+ 
 void main() {
 	
 	//trash();
