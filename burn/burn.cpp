@@ -10,8 +10,8 @@ using namespace std;
 #define inf 1e8
 	
 struct line {
-	pair <int, int> s;
-	pair <int, int> e;
+	int s;
+	int e;
 	double time;
 };
 
@@ -86,8 +86,8 @@ void main() {
 	int size;
 	fin >> size;
 
-	struct line** hline = new line * [size*2];
-		for (int count = 0; count < size*2; ++count)
+	struct line** hline = new line * [size*4];
+		for (int count = 0; count < size*4; ++count)
 			hline[count] = new line;
 	
 		int line_num = 0;
@@ -109,53 +109,80 @@ void main() {
 
 			int p, p1, p2, pm;
 			
-
-			p = find(points.begin(), points.end(), make_pair(x2, x2)) - points.begin();
+			p = find(points.begin(), points.end(), make_pair(x2, y2)) - points.begin();
 				if (p == points.size()) points.push_back({ x2,y2 });
 			p2 = p;
-			p = find(points.begin(), points.end(), make_pair(xm, xm)) - points.begin();
+			p = find(points.begin(), points.end(), make_pair(xm, ym)) - points.begin();
 				if (p == points.size()) points.push_back({ xm,ym });
 			pm = p;
-			p = find(points.begin(), points.end(), make_pair(x1, x1)) - points.begin();
+			p = find(points.begin(), points.end(), make_pair(x1, y1)) - points.begin();
 				if (p == points.size()) points.push_back({ x1,y1 });
 			p1 = p;
 
-			
+		hline[line_num]->s = p1;
+		hline[line_num]->e = pm;
+		hline[line_num]->time = t;
 
-		hline[line_num]->s = make_pair (x1, y1);
-		hline[line_num]->e = make_pair(xm, ym);
+		line_num++;
+		hline[line_num]->s = pm;
+		hline[line_num]->e = p1;
+		hline[line_num]->time = t;
+
+		line_num++;
+
+		hline[line_num]->s = pm;
+		hline[line_num]->e = p2;
 		hline[line_num]->time = t;
 		line_num++;
-		hline[line_num]->s = make_pair(xm, ym);
-		hline[line_num]->e = make_pair(x2, y2);
+
+		hline[line_num]->s = p2;
+		hline[line_num]->e = pm;
 		hline[line_num]->time = t;
 		line_num++;
 	}
 
 	for (int i = 0; i < size * 2; i++) {
-		cout << hline[i]->s.first << " " << hline[i]->s.second << " " << hline[i]->e.first << " " << hline[i]->e.second << " " <<  hline[i]->time << endl;
+		cout << hline[i]->s << " "  << hline[i]->e << " " <<  hline[i]->time << endl;
 	}
 
 	// кусок говнокода
 
-	double ** range = new double * [size * 2];
-	for (int count = 0; count < size * 2; ++count)
-		range[count] = new double;
 
+	/*double ** arr = new double * [size * 2];
+	for (int count = 0; count < size * 2; ++count)
+		arr[count] = new double;*/
+
+	double arr[6][6];
 	for (int i = 0; i < size * 2; i++) {
 		for (int j = 0; j < size * 2; j++) {
 			if (i == j)
-				range[i][j] = 0;
+				arr[i][j] = 0;
 			else
-				range[i][j] = inf;
+				arr[i][j] = inf;
 		}
 	}
 		
 
-	for (int i = 0; i < size * 2; i++) {
+	for (int count = 0; count < size * 2; count++)
+		for (int i = 0; i < size*2; i++) {
+			//bool stop = false;
+			for (int j = 0; j < line_num; j++)
+				if (arr[count][hline[j]->s] + hline[j]->time < arr[count][hline[j]->e]) {
+					arr[count][hline[j]->e] = arr[count][hline[j]->s] + hline[j]->time;
+					//stop = true;
 
+				}
+			//if (!stop) break;
+		}
+
+	for (int i = 0; i < size * 2; i++) {
+		for (int j = 0; j < size * 2; j++) {
+			cout << arr[i][j] << " ";
+		}
+		cout << endl;
 	}
 
+	_getch();
 	/*int** arr = new int* [size];
 	for (int count = 0; count < size; ++count)
 		arr[count] = new int[5];
@@ -170,5 +197,5 @@ void main() {
 		cout << endl;
 	}
 	*/
-	
+	return;
 }
