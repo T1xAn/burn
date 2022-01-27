@@ -15,7 +15,6 @@ struct line {
 	double time;
 };
 
-
 //void trash() {
 //int *size = new int;
 //	cout << endl << "Enter match num - ";
@@ -75,8 +74,6 @@ struct line {
 //
  
 void main() {
-	//auto p1 = (find(points.begin(), points.end(), make_pair(x1, x2)) - points.begin());
-	//trash();
 	ifstream fin("f.in");
 	if (!fin.is_open()) {
 		cout << endl << "File can not be opend";
@@ -91,8 +88,8 @@ void main() {
 			hline[count] = new line;
 	
 		int line_num = 0;
-
 		vector <pair <int, int>> points;
+
 		for (int i = 0; i < size; i++) {
 			int x1, y1, x2, y2, xm, ym;
 			float t;
@@ -122,21 +119,10 @@ void main() {
 		hline[line_num]->s = p1;
 		hline[line_num]->e = pm;
 		hline[line_num]->time = t;
-
-		line_num++;
-		hline[line_num]->s = pm;
-		hline[line_num]->e = p1;
-		hline[line_num]->time = t;
-
 		line_num++;
 
 		hline[line_num]->s = pm;
 		hline[line_num]->e = p2;
-		hline[line_num]->time = t;
-		line_num++;
-
-		hline[line_num]->s = p2;
-		hline[line_num]->e = pm;
 		hline[line_num]->time = t;
 		line_num++;
 	}
@@ -145,14 +131,15 @@ void main() {
 		cout << hline[i]->s << " "  << hline[i]->e << " " <<  hline[i]->time << endl;
 	}
 
-	// кусок говнокода
+	
 
 
-	/*double ** arr = new double * [size * 2];
+	double ** arr = new double * [size * 2];
 	for (int count = 0; count < size * 2; ++count)
-		arr[count] = new double;*/
+		arr[count] = new double;
 
-	double arr[6][6];
+	//double arr[6][6];
+
 	for (int i = 0; i < size * 2; i++) {
 		for (int j = 0; j < size * 2; j++) {
 			if (i == j)
@@ -161,28 +148,38 @@ void main() {
 				arr[i][j] = inf;
 		}
 	}
-		
+		// со stop тоже работает, но хз быстрее или нет
 
 	for (int count = 0; count < size * 2; count++)
 		for (int i = 0; i < size*2; i++) {
 			//bool stop = false;
-			for (int j = 0; j < line_num; j++)
-				if (arr[count][hline[j]->s] + hline[j]->time < arr[count][hline[j]->e]) {
+			for (int j = 0; j < line_num; j++) {
+				if (arr[count][hline[j]->s] + hline[j]->time < arr[count][hline[j]->e])
 					arr[count][hline[j]->e] = arr[count][hline[j]->s] + hline[j]->time;
-					//stop = true;
-
-				}
+				if (arr[count][hline[j]->e] + hline[j]->time < arr[count][hline[j]->s])
+					arr[count][hline[j]->s] = arr[count][hline[j]->e] + hline[j]->time;	
+				//stop = true;
+			}
 			//if (!stop) break;
 		}
 
-	for (int i = 0; i < size * 2; i++) {
-		for (int j = 0; j < size * 2; j++) {
-			cout << arr[i][j] << " ";
-		}
-		cout << endl;
-	}
+	//for (int i = 0; i < size * 2; i++) {
+	//	for (int j = 0; j < size * 2; j++) {
+	//		cout << arr[i][j] << " ";
+	//	}
+	//	cout << endl;
+	//}
 
-	_getch();
+	// кусок говнокода
+
+	for (int count = 0; count < points.size(); count++) {
+
+		if (points[count].first % 2 == 0 && points[count].second % 2 == 0) {
+			//for .....;
+		}
+
+	 }
+
 	/*int** arr = new int* [size];
 	for (int count = 0; count < size; ++count)
 		arr[count] = new int[5];
