@@ -75,7 +75,7 @@ struct line {
 //
  
 void main() {
-	
+	//auto p1 = (find(points.begin(), points.end(), make_pair(x1, x2)) - points.begin());
 	//trash();
 	ifstream fin("f.in");
 	if (!fin.is_open()) {
@@ -91,19 +91,36 @@ void main() {
 			hline[count] = new line;
 	
 		int line_num = 0;
-for (int i = 0; i < size; i++) {
-	int x1, y1, x2, y2, xm, ym;
-	float t;
 
-		fin >> x1 >> y1 >> x2 >> y2 >> t;
-		x1 *= 2;
-		x2 *= 2;
-		y1 *= 2;
-		y2 *= 2;
-		t /= 2; 
+		vector <pair <int, int>> points;
+		for (int i = 0; i < size; i++) {
+			int x1, y1, x2, y2, xm, ym;
+			float t;
 
-		xm = (x1 + x2) / 2;
-		ym = (y1 + y2) / 2;
+			fin >> x1 >> y1 >> x2 >> y2 >> t;
+			x1 *= 2;
+			x2 *= 2;
+			y1 *= 2;
+			y2 *= 2;
+			t /= 2;
+
+			xm = (x1 + x2) / 2;
+			ym = (y1 + y2) / 2;
+
+			int p, p1, p2, pm;
+			
+
+			p = find(points.begin(), points.end(), make_pair(x2, x2)) - points.begin();
+				if (p == points.size()) points.push_back({ x2,y2 });
+			p2 = p;
+			p = find(points.begin(), points.end(), make_pair(xm, xm)) - points.begin();
+				if (p == points.size()) points.push_back({ xm,ym });
+			pm = p;
+			p = find(points.begin(), points.end(), make_pair(x1, x1)) - points.begin();
+				if (p == points.size()) points.push_back({ x1,y1 });
+			p1 = p;
+
+			
 
 		hline[line_num]->s = make_pair (x1, y1);
 		hline[line_num]->e = make_pair(xm, ym);
