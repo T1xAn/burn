@@ -83,8 +83,8 @@ void main() {
 	int size;
 	fin >> size;
 
-	struct line** hline = new line * [size*4];
-		for (int count = 0; count < size*4; ++count)
+	struct line** hline = new line * [size*2];
+		for (int count = 0; count < size*2; ++count)
 			hline[count] = new line;
 	
 		int line_num = 0;
@@ -126,19 +126,20 @@ void main() {
 		hline[line_num]->time = t;
 		line_num++;
 	}
+		fin.close();
 
 	/*for (int i = 0; i < size * 2; i++) {
 		cout << hline[i]->s << " "  << hline[i]->e << " " <<  hline[i]->time << endl;
 	}*/
 
-	double ** arr = new double * [size * 2];
-	for (int count = 0; count < size * 2; ++count)
-		arr[count] = new double;
+	double ** arr = new double * [points.size()]; //размеры могут быть другие
+	for (int count = 0; count < points.size(); ++count)
+		arr[count] = new double[points.size()];
 
 	//double arr[6][6];
 
-	for (int i = 0; i < size * 2; i++) {
-		for (int j = 0; j < size * 2; j++) {
+	for (int i = 0; i < points.size(); i++) {
+		for (int j = 0; j < points.size(); j++) {
 			if (i == j)
 				arr[i][j] = 0;
 			else
@@ -147,8 +148,8 @@ void main() {
 	}
 		// со stop тоже работает, но хз быстрее или нет
 
-	for (int count = 0; count < size * 2; count++) {
-		for (int i = 0; i < size * 2; i++) {
+	for (int count = 0; count < points.size(); count++) {
+		for (int i = 0; i < points.size(); i++) {
 			//bool stop = false;
 			for (int j = 0; j < line_num; j++) {
 				if (arr[count][hline[j]->s] + hline[j]->time < arr[count][hline[j]->e])
@@ -168,7 +169,7 @@ void main() {
 	//	cout << endl;
 	//}
 
-	// кусок говнокода
+	// всё ещё кусок говнокода
 	int cords;
 	double max = 0; 
 	double min = inf;
@@ -182,17 +183,30 @@ void main() {
 				double ts = arr[count][hline[i]->s];
 				double te = arr[count][hline[i]->e];
 				if (ts > te) swap(ts, te);
-				if (te = ts + time) time = te;  //continue;
-				if (ts - te == 0)  time = time / 2;
-				if(ts-te != 0) time = ts - (time - te - ts) / 2;
+				//
+				//if (ts - te == 0) 
+				//	time = time / 2;
+				//if(te-ts != 0)
+				//	time = ts + (time - te - ts) / 2;
+				//else if (te == ts + time) 
+				//	time = te;  //continue;
+
+
+				if (ts - te == 0) time = time / 2;
+			    if (te == ts + time) time = te;  //continue;
+				else time = ts +(te-ts) + (time - (ts + (te - ts)))/ 2;
 				if (time > max) max = time;
 			}
 			if (min >= max) min = max; cords = count;
 		}
 
 	 }
+	ofstream fon("f.out");
+	fon << points[cords].first / 2 << " " << points[cords].second /2 << endl << max;
+	fon.close();
 
-	cout << points[cords].first << " " << points[cords].second << endl << max;
+
+	
 	/*int** arr = new int* [size];
 	for (int count = 0; count < size; ++count)
 		arr[count] = new int[5];
@@ -207,5 +221,4 @@ void main() {
 		cout << endl;
 	}
 	*/
-	return;
 }
